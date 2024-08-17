@@ -71,3 +71,19 @@ class VAE_Encoder(nn.Sequential):
             x = F.pad(x, (0, 1, 0, 1))
         
         x = module(x)
+
+        # (Bath_size, output_channel, height / 8, width / 8) -> Two Tensors of Shape (Batch_size, 4, height / 8, width / 8)
+        mean, log_variance = torch.chunk(x, 2, dim=1)
+        # (Bath_size, output_channel, height / 8, width / 8) -> Two Tensors of Shape (Batch_size, 4, height / 8, width / 8)
+        log_variance = torch.clamp(log_variance, -30, 20)
+        # (Bath_size, output_channel, height / 8, width / 8) -> Two Tensors of Shape (Batch_size, 4, height / 8, width / 8)
+        variance = log_variance.exp()
+        # (Bath_size, output_channel, height / 8, width / 8) -> Two Tensors of Shape (Batch_size, 4, height / 8, width / 8)
+        standard_deviation = variance.sqrt()
+
+        # Z=N(0, 1) -> N(mean, variance)=x?
+        x = mean + standard_deviation + noise
+        # scale output by constant
+        x *= 0.18215
+
+        return x
