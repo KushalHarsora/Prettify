@@ -11,6 +11,7 @@ Coding stable diffusion model from scratch using `python` and `pytorch`
 
 ## Demo of Project
 
+![demo](https://github.com/user-attachments/assets/1b0aa770-ff38-4dc3-9381-9f25c31405d4)
 
 
 ## Special Thanks
